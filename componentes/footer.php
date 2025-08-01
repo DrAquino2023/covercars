@@ -27,11 +27,11 @@
 </div>
 <!-- Scripts -->
 
-<script src="js/script.js"></script>
+<script src="../js/script.js"></script>
 <?php
   $page = basename($_SERVER['PHP_SELF']);
   if (in_array($page, ['index.php', 'productos.php'])): ?>
-    <script src="js/carrito.js"></script>
+    <script src="../js/carrito.js"></script>
 <?php endif; ?>
 
 <script>

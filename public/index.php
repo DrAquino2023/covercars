@@ -1,4 +1,26 @@
-<?php include "componentes/header.php"; ?>
+<?php include "../componentes/header.php"; ?>
+
+<?php if (!empty($_GET['db_error'])): ?>
+  <div class="modal fade" id="dbErrorModal" tabindex="-1" aria-labelledby="dbErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="dbErrorModalLabel">Error de conexión a la base de datos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+      <div class="modal-body">
+        <?= htmlspecialchars($_GET['db_error']) ?>
+    </div>
+  </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var dbErrorModal = new bootstrap.Modal(document.getElementById('dbErrorModal'));
+      dbErrorModal.show();
+    });
+  </script>
+  <?php endif; ?>
+
 
 <!-- HERO -->
 <header class="hero-section">
@@ -39,7 +61,7 @@
     
     <!-- Grid de productos corregido -->
     <div class="productos-grid">
-      <?php while ($p = $productos->fetch_assoc()): ?>
+      <?php if ($productos): while ($p = $productos->fetch_assoc()): ?>
         <div class="producto-card fade-in-up" data-aos="fade-up">
           <!-- Imagen del producto -->
           <div class="producto-imagen-container">
@@ -94,7 +116,9 @@
             </div>
           </div>
         </div>
-      <?php endwhile; ?>
+      <?php endwhile; else: ?>
+          <p class="text-center text-muted">No hay productos disponibles en este momento.</p>
+      <?php endif; ?>
     </div>
   </div>
 </section>
@@ -166,53 +190,8 @@
   </div>
 </div>
 
-<?php include "login.php"; ?>
-<?php include "componentes/contacto.php"; ?>
-<?php include "componentes/footer.php"; ?>
+<?php include "../login.php"; ?>
+<?php include "../componentes/contacto.php"; ?>
+<?php include "../componentes/footer.php"; ?>
 
-<script>
-// Funcionalidad del modal de personalización
-document.addEventListener('DOMContentLoaded', function() {
-  // Botones + y - para cantidad
-  const btnMenos = document.getElementById('btn-menos');
-  const btnMas = document.getElementById('btn-mas');
-  const inputCantidad = document.getElementById('modalCantidad');
-  const precioTotalSpan = document.getElementById('precio-total-modal');
-  
-  let precioUnitario = 0;
-  
-  // Función para actualizar el precio total
-  function actualizarPrecioTotal() {
-    const cantidad = parseInt(inputCantidad.value) || 1;
-    const total = precioUnitario * cantidad;
-    precioTotalSpan.textContent = `$${total.toLocaleString('es-AR')}`;
-  }
-  
-  // Event listeners para cantidad
-  btnMenos.addEventListener('click', function() {
-    let valor = parseInt(inputCantidad.value) || 1;
-    if (valor > 1) {
-      inputCantidad.value = valor - 1;
-      actualizarPrecioTotal();
-    }
-  });
-  
-  btnMas.addEventListener('click', function() {
-    let valor = parseInt(inputCantidad.value) || 1;
-    inputCantidad.value = valor + 1;
-    actualizarPrecioTotal();
-  });
-  
-  inputCantidad.addEventListener('input', actualizarPrecioTotal);
-  
-  // Actualizar precio cuando se abre el modal
-  document.getElementById('modalPersonalizar').addEventListener('show.bs.modal', function() {
-    if (window.productoSeleccionado) {
-      document.getElementById('producto-seleccionado-nombre').textContent = window.productoSeleccionado.nombre;
-      document.getElementById('producto-seleccionado-precio').textContent = `Precio: $${parseFloat(window.productoSeleccionado.precio).toLocaleString('es-AR')}`;
-      precioUnitario = parseFloat(window.productoSeleccionado.precio);
-      actualizarPrecioTotal();
-    }
-  });
-});
-</script>
+<script src="assets/js/personalizar.js"></script>

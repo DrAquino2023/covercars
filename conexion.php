@@ -12,7 +12,28 @@ $base_datos = 'covercars'; // nombre de tu base de datos
 // Configurar reporte de errores de MySQL
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-try {
+function obtenerConexion(&$error) {
+    global $host, $usuario, $contrasena, $base_datos;
+    $error = null; // Inicializar variable de error
+    try {
+        // Crear la conexión
+        $conn = new mysqli($host, $usuario, $contrasena, $base_datos);
+        
+        // Configurar el conjunto de caracteres a UTF-8
+        $conn->set_charset("utf8");
+        
+        // Retornar la conexión
+        return $conn;
+        
+    } catch (mysqli_sql_exception $e) {
+        // Manejo de errores
+        $error = "Error de conexión a la base de datos: " . $e->getMessage();
+        return null;
+    }
+}   
+
+
+/*try {
     // Crear la conexión
     $conn = new mysqli($host, $usuario, $contrasena, $base_datos);
     
@@ -113,5 +134,5 @@ function crearBaseDatosComoFallback() {
     } catch (Exception $e) {
         return false;
     }
-}
+}*/
 ?>

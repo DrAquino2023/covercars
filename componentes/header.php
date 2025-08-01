@@ -4,15 +4,13 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Conexión a la base de datos
-$conexion = new mysqli("localhost", "root", "", "covercars");
-if ($conexion->connect_error) {
-  die("Error de conexión: " . $conexion->connect_error);
-}
+require_once __DIR__. '/../conexion.php';
+$conexion = obtenerConexion($db_error);
 
 // Solo cargar productos si estamos en la página principal
 $productos = null;
 $current_page = basename($_SERVER['PHP_SELF']);
-if ($current_page === 'index.php') {
+if ($current_page === 'index.php' && $conexion) {
   $productos = $conexion->query("SELECT * FROM productos ORDER BY nombre ASC");
 }
 ?>
@@ -29,7 +27,7 @@ if ($current_page === 'index.php') {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   
   <!-- JavaScript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -63,13 +61,13 @@ if ($current_page === 'index.php') {
           <li class="nav-item"><a class="nav-link" href="productos.php">Productos</a></li>
           <!-- Enlace Admin Dashboard -->
           <?php if(isset($_SESSION['usuario']['is_admin']) && $_SESSION['usuario']['is_admin']): ?>
-            <li class="nav-item"><a class="nav-link text-danger" href="admin/index.php">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link text-danger" href="/../admin/index.php">Dashboard</a></li>
           <?php endif; ?>
           <li class="nav-item"><a class="nav-link" href="index.php#contacto">Contacto</a></li>
 
           <!-- BOTÓN CARRITO -->
           <li class="nav-item ms-3">
-            <a href="carrito.php" class="btn btn-outline-warning rounded-circle position-relative d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <a href="/../carrito.php" class="btn btn-outline-warning rounded-circle position-relative d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
               <i class="bi bi-cart3 fs-5"></i>
               <span id="contador-carrito" class="badge bg-success position-absolute top-0 start-100 translate-middle rounded-pill">0</span>
             </a>
@@ -85,11 +83,11 @@ if ($current_page === 'index.php') {
               <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-3 mt-2" aria-labelledby="usuarioDropdown">
                 <li><h6 class="dropdown-header">👋 Hola, <?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></h6></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="perfil.php"><i class="bi bi-person me-2"></i> Mi Perfil</a></li>
-                <li><a class="dropdown-item" href="editar_perfil.php"><i class="bi bi-pencil-square me-2"></i> Editar Perfil</a></li>
-                <li><a class="dropdown-item" href="historial.php"><i class="bi bi-clock-history me-2"></i> Mis Compras</a></li>
+                <li><a class="dropdown-item" href="/../perfil.php"><i class="bi bi-person me-2"></i> Mi Perfil</a></li>
+                <li><a class="dropdown-item" href="/../editar_perfil.php"><i class="bi bi-pencil-square me-2"></i> Editar Perfil</a></li>
+                <li><a class="dropdown-item" href="/../historial.php"><i class="bi bi-clock-history me-2"></i> Mis Compras</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión</a></li>
+                <li><a class="dropdown-item text-danger" href="/../logout.php"><i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión</a></li>
               </ul>
             </li>
           <?php else: ?>
@@ -139,7 +137,7 @@ if ($current_page === 'index.php') {
           <div class="tab-content">
             <!-- Iniciar sesión -->
             <div class="tab-pane fade show active" id="login" role="tabpanel">
-              <form action="procesar_login.php" method="POST" class="needs-validation" novalidate>
+              <form action="/../procesar_login.php" method="POST" class="needs-validation" novalidate>
                 <div class="mb-3">
                   <label for="emailLogin" class="form-label fw-semibold">
                     <i class="bi bi-envelope me-1"></i> Correo electrónico
@@ -162,7 +160,7 @@ if ($current_page === 'index.php') {
 
             <!-- Registrarse -->
             <div class="tab-pane fade" id="register" role="tabpanel">
-              <form action="procesar_registro.php" method="POST" class="needs-validation" novalidate>
+              <form action="/../procesar_registro.php" method="POST" class="needs-validation" novalidate>
                 <div class="mb-3">
                   <label for="nombre" class="form-label fw-semibold">
                     <i class="bi bi-person me-1"></i> Nombre completo
@@ -192,7 +190,7 @@ if ($current_page === 'index.php') {
 
             <!-- Recuperar contraseña -->
             <div class="tab-pane fade" id="recover" role="tabpanel">
-              <form action="recuperar_contrasena.php" method="POST" class="needs-validation" novalidate>
+              <form action="/../recuperar_contrasena.php" method="POST" class="needs-validation" novalidate>
                 <div class="mb-3">
                   <label for="emailRecuperar" class="form-label fw-semibold">
                     <i class="bi bi-envelope me-1"></i> Correo electrónico

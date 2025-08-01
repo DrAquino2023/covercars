@@ -203,7 +203,7 @@ h6 { font-size: 1rem; }
 .hero-section {
   min-height: 100vh;
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), 
-              url('../img/hero-cover-wide.jpg') center center / cover no-repeat;
+              url('../../img/hero-cover-wide.jpg') center center / cover no-repeat;
   position: relative;
   color: var(--white) !important;
   display: flex;

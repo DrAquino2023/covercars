@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /covercars/
+
+  # Si piden exactamente la raíz o index.php, redirige internamente a public/index.php
+  RewriteRule ^(?:index\.php)?$ public/index.php [L]
+
+  # Si piden algo que NO comience por public/, vuelve a forzarlo dentro de public/
+  RewriteCond %{REQUEST_URI} !^/covercars/public/
+  RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
