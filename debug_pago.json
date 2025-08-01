@@ -1,0 +1,13 @@
+{
+    "carrito": [
+        {
+            "id": 1,
+            "nombre": "Funda para Sed\u00e1n",
+            "precio": 1,
+            "imagen": "sedan.jpg",
+            "tela": "Impermeable",
+            "tamano": "XXL",
+            "cantidad": 1
+        }
+    ]
+}
